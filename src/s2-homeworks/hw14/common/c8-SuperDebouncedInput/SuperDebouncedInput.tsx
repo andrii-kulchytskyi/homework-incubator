@@ -1,9 +1,8 @@
-import React, {DetailedHTMLProps, InputHTMLAttributes, ReactNode, useState} from 'react'
+import React, { DetailedHTMLProps, InputHTMLAttributes, ReactNode, useState } from 'react'
 import SuperInputText from '../../../hw04/common/c1-SuperInputText/SuperInputText'
 
 // тип пропсов обычного инпута
-type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement>
+type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
 // здесь мы говорим что у нашего инпута будут такие же пропсы как у обычного инпута, кроме type
 // (чтоб не писать value: string, onChange: ...; они уже все описаны в DefaultInputPropsType)
@@ -13,8 +12,7 @@ export type SuperDebouncedInputPropsType = Omit<DefaultInputPropsType, 'type'> &
     onEnter?: () => void
     error?: ReactNode
     spanClassName?: string
-} // илм экспортировать тип SuperInputTextPropsType
-    & { // плюс специальный пропс SuperPagination
+} & { // плюс специальный пропс SuperPagination
     onDebouncedChange?: (value: string) => void
 }
 
@@ -22,7 +20,6 @@ const SuperDebouncedInput: React.FC<SuperDebouncedInputPropsType> = (
     {
         onChangeText,
         onDebouncedChange,
-
         ...restProps // все остальные пропсы попадут в объект restProps
     }
 ) => {
@@ -32,17 +29,23 @@ const SuperDebouncedInput: React.FC<SuperDebouncedInputPropsType> = (
         onChangeText?.(value)
 
         if (onDebouncedChange) {
-            // делает студент
+            // Clear the previous timer
 
-            // остановить предыдущий таймер
-            // запустить новый на 1500ms, в котором вызовется функция
+                clearTimeout(timerId)
+            
 
-            //
+            // Set a new timer
+            const newTimerId = setTimeout(() => {
+                onDebouncedChange(value)
+            }, 1500)
+
+            // Save the new timer id
+            setTimerId(+newTimerId)
         }
     }
 
     return (
-        <SuperInputText onChangeText={onChangeTextCallback} {...restProps}/>
+        <SuperInputText onChangeText={onChangeTextCallback} {...restProps} />
     )
 }
 
